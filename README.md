@@ -10,6 +10,8 @@ The idea is a fractal, hierarchical statemachine whose components are fractal hi
 
 Use for whatever. Is probably pretty taxing on memory if your structures get too big.
 
+As with most things in ruby if you are not on top of your variables then things can go badly wrong with your progamme. Take care when writing to states.
+
 ####  Usage
 ###### To make a cog:
 ```ruby
@@ -61,6 +63,10 @@ my_cog.here
 my_cog.things
 => current value of readable/writable state variable `things`
 ```
+
+###### To kill a cog
+Have the last evaluated line in the block be `:break`
+Attempts to turn the cog will then result in a `CogHasExited` exception.
 
 ### Things to note
 You don't _really_ have to have to initialize any state variables if you don't want to, you could generate your state in the passed block, but be careful as that could run every turn of the cog.

@@ -24,7 +24,7 @@ class Cog
   end
 
   def turn
-    @cog.resume
+    @cog.alive? ? @cog.resume : raise(CogHasExited)
   end
 
   private
@@ -33,7 +33,8 @@ class Cog
     @cog = Fiber.new do |arg_hash|
       Fiber.yield
       loop do
-        Fiber.yield teeth.call(arg_hash)
+        out = teeth.call(arg_hash)
+        out == :break ? break : Fiber.yield out
       end
     end
     @cog.resume(@args)
@@ -52,3 +53,5 @@ class Cog
   end
 
 end
+
+class CogHasExited < StandardError; end
