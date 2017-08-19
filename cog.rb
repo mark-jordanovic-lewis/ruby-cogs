@@ -19,18 +19,12 @@ class Cog
     @readers = read_only.empty? ? accessors : read_only
     @args = args
     build_cog(&teeth)
+    build_readers
+    build_writers
   end
 
   def turn
     @cog.resume
-  end
-
-  def read(arg)
-    @readers.include?(arg) ? @args[arg] : raise(ReadDisallowed)
-  end
-
-  def write(arg, val)
-    @writers.include?(arg) ? @args[arg] = val : raise(WriteDisallowed)
   end
 
   private
@@ -39,14 +33,22 @@ class Cog
     @cog = Fiber.new do |arg_hash|
       Fiber.yield
       loop do
-        teeth.call(arg_hash)
-        Fiber.yield
+        Fiber.yield teeth.call(arg_hash)
       end
     end
     @cog.resume(@args)
   end
 
-end
+  def build_writers
+    @writers.each do |w|
+      define_singleton_method("#{w}=".to_sym) {|var| @args[w] = var }
+    end
+  end
 
-class ReadDisallowed < StandardError; end
-class WriteDisallowed < StandardError; end
+  def build_readers
+    (@readers+@writers).each do |a|
+      define_singleton_method(a) { @args[a] }
+    end
+  end
+
+end
