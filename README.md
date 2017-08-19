@@ -61,3 +61,14 @@ my_cog.here
 my_cog.things
 => current value of readable/writable state variable `things`
 ```
+
+### Things to note
+You don't have to have to initialize any state variables if you don't want to.
+
+You don't need to allow access to any state variables if you don't want to.
+
+You can have read_only, read and write (accessors), or neither, there is no write_only.
+
+read_only blacklists anything in accessors and will not generate a writer for that.
+
+The last executed line in the block is yielded by the loop in `build_cog` so you can do what you like with your state. eg/ if you only ever want to return state after processing, have the state as the last line, or have nil if you want complete encapsulation.
