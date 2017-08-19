@@ -4,18 +4,20 @@ require_relative 'cog'
 room, bob, alice, nicola = nil
 
 def fizzbuzz?(n)
-  n % 15 == 0 ? 'fizzbuzz' : n.to_s
+  n % 15 == 0 ? 'fizzbuzz' : nil
 end
 
 def fizz?(n)
-  n % 3 == 0 ? 'fizz' : n.to_s
+  n % 3 == 0 ? 'fizz' : nil
 end
 
 def buzz?(n)
-  n % 5 == 0 ? 'buzz' : n.to_s
+  n % 5 == 0 ? 'buzz' : nil
 end
 
-reposnses = (1..101).to_a.map(&:fizzbuzz?).map(&:fizz?).map(&:buzz?).freeze
+responses = (1..100).to_a
+                    .map{|i| fizzbuzz?(i) || fizz?(i) || buzz?(i) || i.to_s }
+                    .freeze
 
 
 # then instantiate actual cogs
@@ -38,13 +40,14 @@ nicola = Cog.new(
          ) { |args| "#{responses[args[:count]]}" }
 
 room = Cog.new(
-         args: { players: [bob, alice, nicola].shuffle }
+         args: { players: [bob, alice, nicola].shuffle,
+                 count: 0
+               }
        ) do |args|
-  count = 0
-  player = args[:players][count % 3]
-  puts "#{player.read(:name)}: #{player.turn}"
-  count += 1
-  args[:players].each {|p| p.write(:count, count) }
+  player = args[:players][args[:count] % 3]
+  puts "#{player.name}: #{player.turn}"
+  args[:count] += 1
+  args[:players].each {|p| p.count = args[:count] }
 end
 
 
