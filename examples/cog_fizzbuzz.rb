@@ -1,4 +1,4 @@
-require_relative 'cog'
+require_relative '../cog'
 
 # must instantiate cog names at top.
 room, bob, alice, nicola = nil

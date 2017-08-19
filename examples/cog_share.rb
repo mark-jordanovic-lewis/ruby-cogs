@@ -1,4 +1,4 @@
-require_relative 'cog'
+require_relative '../cog'
 
 # Have to define cogs at top
 
