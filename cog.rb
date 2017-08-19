@@ -14,9 +14,9 @@ class Cog
 
   attr_reader :readers, :writers
 
-  def initialize(readers: %i[], accessors: %i[], args: {}, &teeth)
-    @writers = accessors - readers
-    @readers = readers.empty? ? accessors : readers
+  def initialize(read_only: %i[], accessors: %i[], args: {}, &teeth)
+    @writers = accessors - read_only
+    @readers = readers.empty? ? accessors : read_only
     @args = args
     build_cog(&teeth)
   end

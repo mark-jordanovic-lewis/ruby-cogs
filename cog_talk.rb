@@ -24,7 +24,7 @@ alice = Cog.new(accessors: %i[has], args: {has: 0}) do |args|
 end
 
 
-room = Cog.new(readers: %i[bob alice], args: {bob: bob, alice: alice} ) do |args|
+room = Cog.new(read_only: %i[bob alice], args: {bob: bob, alice: alice} ) do |args|
   args[:bob].turn
   args[:alice].turn
 end
