@@ -63,7 +63,7 @@ my_cog.things
 ```
 
 ### Things to note
-You don't have to have to initialize any state variables if you don't want to.
+You don't _really_ have to have to initialize any state variables if you don't want to, you could generate your state in the passed block, but be careful as that could run every turn of the cog.
 
 You don't need to allow access to any state variables if you don't want to.
 
