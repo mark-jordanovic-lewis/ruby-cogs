@@ -34,7 +34,7 @@ class Cog
       Fiber.yield
       loop do
         out = teeth.call(arg_hash)
-        out == :break ? break : Fiber.yield out
+        out == :complete ? break : Fiber.yield out
       end
     end
     @cog.resume(@args)

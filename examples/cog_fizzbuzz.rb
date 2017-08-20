@@ -3,20 +3,20 @@ require_relative '../cog'
 # must instantiate cog names at top.
 room, bob, alice, nicola = nil
 
-def fizzbuzz?(n)
+def fizzbuzz(n)
   n % 15 == 0 ? 'fizzbuzz' : nil
 end
 
-def fizz?(n)
+def fizz(n)
   n % 3 == 0 ? 'fizz' : nil
 end
 
-def buzz?(n)
+def buzz(n)
   n % 5 == 0 ? 'buzz' : nil
 end
 
 responses = (1..100).to_a
-                    .map{|i| fizzbuzz?(i) || fizz?(i) || buzz?(i) || i.to_s }
+                    .map{|i| fizzbuzz(i) || fizz(i) || buzz(i) || i.to_s }
                     .freeze
 
 
