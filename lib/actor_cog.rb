@@ -61,12 +61,12 @@ class ActorCog < Cog
     @cog.resume(@args)
   end
 
-  def new_cog(name, &teeth)
-    new_name = @args[:name]+name
+  def new_cog(name, read_only: @read_only, accessors: @accessors, args: @respawn_args, &teeth)
+    new_name = args[:name]+name
     [ new_name,
-      ActorCog.new(read_only: @read_only,
-                   accessors: @accessors,
-                   args: @respawn_args.merge(name: new_name),
+      ActorCog.new(read_only: read_only,
+                   accessors: accessors,
+                   args: args.merge(name: new_name),
                    &teeth)
     ]
   end

@@ -41,6 +41,5 @@ RSpec.describe ActorCog do
       expect(name.include? cog.name).to be true
       expect(new_cog.new_message 'four').to eq [:stored, 'four']
     end
-
   end
 end
