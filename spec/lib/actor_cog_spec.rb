@@ -33,10 +33,12 @@ RSpec.describe ActorCog do
 
     it 'generates another actor cog when mail box limit reached' do
       3.times {|i| cog.new_message "#{i}" }
-      _, new_cog = cog.turn
+      name, new_cog = cog.turn
       expect(new_cog.class).to eq ActorCog
       expect(cog.replicants).to eq 1
       expect(new_cog.replicants).to eq 1
+      expect(name).to eq new_cog.name
+      expect(name.include? cog.name).to be true
       expect(new_cog.new_message 'four').to eq [:stored, 'four']
     end
 
