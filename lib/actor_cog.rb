@@ -7,7 +7,7 @@ class ActorCog < Cog
   DEFAULT_NAME = { name: SecureRandom.hex(3) }
   DEFAULT_MAX_MSGS = { max_messages: 20 }
 
-  def initialize(read_only: %i[], accessors: %i[], args: DEFAULTS, &teeth)
+  def initialize(read_only: %i[], accessors: %i[], args: {}, &teeth)
     @read_only = read_only
     @accessors = accessors
     @writers = accessors - read_only
