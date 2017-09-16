@@ -16,11 +16,11 @@ class Cog
 
   def initialize(read_only: %i[], accessors: %i[], args: {}, &teeth)
     @writers = accessors - read_only
-    @readers = read_only.empty? ? accessors : read_only
+    @readers = (accessors+read_only).uniq
     @args = args
-    build_cog(&teeth)
     build_readers
     build_writers
+    build_cog(&teeth)
   end
 
   def turn
