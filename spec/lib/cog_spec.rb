@@ -75,4 +75,32 @@ RSpec.describe Cog do
       end
     end
   end
+
+  context 'A cog with accessors and read_only variables', order: :default do
+    let(:cog){ Cog.new(read_only: %i[a c], accessors: %i[a b], args:{a: 5}){} }
+    let(:methods) { %i[a b b= c] }
+    let(:not_methods) { %i[a= c=] }
+    let(:cog_methods) { cog.methods }
+
+    it "'a' is initialized" do # duplicate but different scenario
+      expect(cog.a).to eq 5
+    end
+
+    it "'c' and 'b' are not initialized" do
+      expect(cog.c).to be nil
+      expect(cog.b).to be nil
+    end
+
+    it "'b' can be written" do
+      cog.b = 4
+      expect(cog.b).to eq 4
+    end
+
+    it 'builds all the readers and writers' do
+      expect(methods.all? { |method| cog_methods.include? method }).to be true
+    end
+    it 'should not build writers to read_only variables' do
+      expect(not_methods.none? { |method| cog_methods.include? method}).to be true
+    end
+  end
 end
