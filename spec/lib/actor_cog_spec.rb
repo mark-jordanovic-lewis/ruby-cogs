@@ -5,6 +5,7 @@ RSpec.describe ActorCog do
     ActorCog.new(
       read_only: %i[replicants],
       args: {
+        name: 'TestActorCog',
         max_messages: 3,
         max_replicants: 2,
         replicants: 0
@@ -15,6 +16,9 @@ RSpec.describe ActorCog do
   }
 
   context "An actor cog that yeilds it's mailbox until it is full" do
+    it 'yields its name' do
+      expect(cog.name).to eq 'TestActorCog'
+    end
 
     it 'accepts incoming messages' do
       expect(cog.new_message 'one').to eq [:stored, 'one']

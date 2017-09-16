@@ -34,6 +34,10 @@ class ActorCog < Cog
     @args[:mailbox].shift
   end
 
+  def name
+    @args[:name]
+  end
+
   private
 
   def build_cog(&teeth)
