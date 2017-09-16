@@ -8,10 +8,9 @@ RSpec.describe RessurrectorCog do
         accessors: %i[limit],
         args: {count: 0, limit:2, reset: 5}
       ) do |args|
-        if args[:count] > args[:limit]
-          :complete
-        elsif args[:limit] > args[:reset]
-          :reinit
+        case
+        when args[:count] > args[:limit] then :complete
+        when args[:limit] > args[:reset] then :reinit
         else
           args[:count] += 1
           [ args[:count], args[:limit] ]
@@ -21,6 +20,7 @@ RSpec.describe RessurrectorCog do
     let(:cog_methods) {cog.methods}
     let(:methods) { %i[count limit limit=]}
     let(:not_methods) { %i[count=] }
+    
     context 'when going through a life cycle', order: :default do
 
       it 'is initialized with the correct methods' do

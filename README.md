@@ -78,3 +78,9 @@ You can have read_only, read and write (accessors), or neither, there is no writ
 read_only blacklists anything in accessors and will not generate a writer for that.
 
 The last executed line in the block is yielded by the loop in `build_cog` so you can do what you like with your state. eg/ if you only ever want to return state after processing, have the state as the last line, or have nil if you want complete encapsulation.
+
+
+## Todo
+- use threads Queue object for mailbox in ActorCog
+- put a cog in a thread that is listening to a port to gather messages
+- talk to another language (probs Go/elixir for pattern matching) via ports using JSON to pass data
