@@ -76,7 +76,7 @@ RSpec.describe Cog do
     end
   end
 
-  context 'A cog with accessors and read_only variables', order: :default do
+  context 'A cog with accessors and read_only variables', order: :defined do
     let(:cog){ Cog.new(read_only: %i[a c], accessors: %i[a b], args:{a: 5}){} }
     let(:methods) { %i[a b b= c] }
     let(:not_methods) { %i[a= c=] }

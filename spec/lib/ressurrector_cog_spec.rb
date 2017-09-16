@@ -20,8 +20,8 @@ RSpec.describe RessurrectorCog do
     let(:cog_methods) {cog.methods}
     let(:methods) { %i[count limit limit=]}
     let(:not_methods) { %i[count=] }
-    
-    context 'when going through a life cycle', order: :default do
+
+    context 'when going through a life cycle', order: :defined do
 
       it 'is initialized with the correct methods' do
         expect(methods.all? { |method| cog_methods.include? method }).to be true

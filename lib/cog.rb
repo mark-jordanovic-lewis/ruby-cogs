@@ -52,7 +52,7 @@ class Cog
   end
 
   def build_readers
-    (@readers+@writers).each do |a|
+    (@readers).each do |a|
       define_singleton_method(a) { @args[a] }
     end
   end

@@ -4,7 +4,8 @@ require 'securerandom'
 
 class ActorCog < Cog
 
-  DEFAULTS = { name: SecureRandom.hex(3), max_messages: 20 }
+  DEFAULT_NAME = { name: SecureRandom.hex(3) }
+  DEFAULT_MAX_MSGS = { max_messages: 20 }
 
   def initialize(read_only: %i[], accessors: %i[], args: DEFAULTS, &teeth)
     @read_only = read_only
@@ -12,6 +13,8 @@ class ActorCog < Cog
     @writers = accessors - read_only
     @readers = (accessors+read_only).uniq
     @respawn_args = args.dup
+    args.merge! DEFAULT_NAME unless args[:name]
+    args.merge! DEFAULT_MAX_MSGS unless args[:max_messages]
     @args = args.merge(mailbox: [])
     build_readers
     build_writers
@@ -41,7 +44,8 @@ class ActorCog < Cog
         case out = teeth.call(arg_hash)
         when :complete then destroy_fiber && break
         when :replicate
-          Fiber.yeild new_cog("_#{SecureRandom.hex(3)}", &teeth)
+          @respawn_args[:replicants] = arg_hash[:replicants] += 1
+          Fiber.yield new_cog("_#{SecureRandom.hex(3)}", &teeth)
         when :reinit
           build_cog(&teeth)
           break
