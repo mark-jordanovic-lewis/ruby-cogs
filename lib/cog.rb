@@ -24,7 +24,7 @@ class Cog
   end
 
   def turn
-    @cog.alive? ? @cog.resume : raise(CogHasExited)
+    @cog&.alive? ? @cog.resume : raise(CogHasExited)
   end
 
   private
@@ -36,8 +36,14 @@ class Cog
         out = teeth.call(arg_hash)
         out == :complete ? break : Fiber.yield(out)
       end
+      destroy_fiber
     end
     @cog.resume(@args)
+  end
+
+  def destroy_fiber
+    @cog = nil
+    raise CogHasExited
   end
 
   def build_writers
@@ -51,7 +57,6 @@ class Cog
       define_singleton_method(a) { @args[a] }
     end
   end
-
 end
 
 class CogHasExited < StandardError; end
