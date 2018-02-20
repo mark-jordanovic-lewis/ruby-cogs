@@ -43,7 +43,7 @@ FAAS implementation of an environment for constructing surveys.
 
 
 ## QuestionName.Elm
-### QuestionName::Msgs
+#### QuestionName::Msgs
 - UpdateAnswer1 String
 - UpdateAnswer2 String
 - ... ...
@@ -52,7 +52,7 @@ FAAS implementation of an environment for constructing surveys.
 NB: a Maximum number of answers is necc. Multiple choice questions with less than
     the max are acceptable to the compiler, adding
 
-### QuestionName::view(s)
+#### QuestionName::view(s)
 ```elm
 questionSection : String -> String -> String -> List String
 heading : String -> Html Msg
@@ -64,10 +64,44 @@ answer : String -> Html Msg
 - answer may be any function which takes user input and generates
   (QuestionName::Msg = UpdateAnswerN String)
 
-### QuestionName::formatAnswer : String -> Encode.Value
+#### QuestionName::formatAnswer : String -> Encode.Value
 - takes a string input representing the question answer and encodes it as a JSON::Value
 
 ## PageId.elm
+#### PageId.drawPage
+- Logic Function governing whether page is drawn or skipped
+- Should this always exist?
+  - return true if page is drawn or if there is no logic to decide this
+  - returns false only if logic exists
+
+
+## Overall Ideas
+
+#### Message passing chain
+- QuestionAnswerMsg String -> Survey.update
+  - via some `onEvent`
+  - Survey must know about QuestionMsgs
+- PageNavigationMsg -> Survey.update
+  - via `onClick`
+  - Survey must know about PageMsgs
+
+#### Imports
+- Survey has Messages, Views, Update, State Model
+  - imports PageMsgs, QuestionMsgs, PageLogic, PageViews
+- Page has Messages, Views, and Logic functions (for display_if etc)
+  - imports QuestionViews, SurveyState
+  - How to deal with skipped pages?
+- Question has Messages, Views, SurveyState
+
+#### SurveyStateModel.elm
+- Built via bluprint JSON
+- Contains both state and JSON encoding function for the state
+
+#### ApiRequestPipe
+- Pipe out JSON to JS land and ajax that shit to the server.
+- How many API calls needed?
+  - Only one for MVP, to submit.
+  - Can catch window closing/reloading respondents with onUnload event?
 
 
 ## ToDo

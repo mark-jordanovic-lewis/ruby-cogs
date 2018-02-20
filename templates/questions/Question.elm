@@ -1,9 +1,17 @@
 module Question exposing (..)
 
+-- Elm Imports
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import List.Extra as LE exposing ()
+
+-- Page Build Imports
+import PageMsgs
+
+-- SUrvey Build Imports
+import SurveyMsgs
+
 
 type QuestionMsg = Answer1 String -- build from blueprint and insert
 type alias QuestionData =
@@ -37,6 +45,6 @@ callAnswer = List.map answer answers
 callAnswer = List.map answer <| LE.zip questionMsgs answers
 
 
-answer : (QuestionMsg, (String, String)) -> Html QuestionMsg
+answer : (QuestionMsg, (String, String)) -> Html SurveyMsg
 answer (message (answer, code)) =
   div [] [] -- build based on question type in blueprint

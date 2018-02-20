@@ -1,6 +1,17 @@
 module Page exposing (..)
-import QuestionName as Question {- insert correct Question here -}
 
+-- Elm Imports
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import List.Extra as LE exposing ()
+
+-- Question Build Imports
+{- insert correct Question -}
+import QuestionName as Question
+
+-- Survey Build Imports
+import SurveyMsgs
 
 type alias PageData =
   { r |
@@ -17,25 +28,16 @@ type PageMsg = Quit | Answer   -- use blueprint to construct and insert
        Answer updating will always be done from the question page.
 -}
 
-
-update : PageMsg -> PageData -> (Answers, Cmd PageMsg)
-update pageMsg pageData =
-  case pageMsg of
-    DrawPage ->
-      ( { pageData | currentPage = True
-                   , visited = True
-        }
-      , Cmd.none
-      )
+drawPage : SurveyState -> Bool
+drawPage currentState =
+  True -- build logic from blueprint
 
 view : Bool -> Html SurveyMsg
 view admin =
   div
     []
     if admin then
-        [ drawAdminPanel
-        , drawPageContent
-        ]
+        [ drawAdminPanel, drawPageContent ]
     else
         [ drawPageContent ]
 
