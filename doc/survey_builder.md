@@ -3,8 +3,23 @@
 ## Description
 FAAS implementation of an environment for constructing surveys.
 
+## Developer Guidance
+- Must use TDD as described below
+  - Do not write any code without a spec
+  - Write a minimal spec for the _top level_ functionality
+  - Only write code to pass that spec
+  - Write a spec that defines the _next level lower_ of functionality
+- Code should be readable
+  - No single/double/triple char var names
+  - Keep func/var names as short as possible to describe the function
+    - The more specialised the function, the longer the name
+  - Short functions are happy functions, except Elm `update`s
+  - Comments are encouraged but should not replace code readability
 
-## Operational Flow
+
+
+## Program Flow
+#### Overall Operational Flow
 - A blueprint is read in and a hash is generated from the structure.
   - This \@pages hash (which may be nested) contains a symbol or a string at
     each of its leaves.
@@ -28,6 +43,53 @@ FAAS implementation of an environment for constructing surveys.
       - Updating Answers Model
       - Performing sample filtering logic
 - Main.elm is compiled
+
+#### bootstrapping data loader (SurveyBuildMachine)
+- One time operation on deploy
+- Each template is loaded into a cog
+- A survey cog is loaded with the template cogs
+
+#### Blueprint -> JSON
+- Use online docs for DSL to produce template JSON for each product.
+- Trim branches off template JSON using the order data
+  - Find form of order to restrict the template JSON
+  - Eventually would like to simply generate the JSON from the order and blueprint instead of trimming so we can modularise survey purchase and generation.
+
+#### JSON -> data loader
+- Pages are loaded sequentially to maintain the build order. (ie/ this is not a parallel or concurrent algorithm)
+**Construct a few page and question cogs and revisit this part**
+
+
+## SurveyBuildMachine
+#### Input JSON
+```javascript
+  {
+    'page_0': {
+      'question_type': 'QuestionName',
+      'header': 'some title string',
+      'question': {
+        'title': 'some title string',
+        'text': 'actual question',
+        'answers': [
+          'answer_0': 'answer 0',
+          ...,
+          'answer_n': 'answer n'
+        ]
+      },
+      'showLogic': {
+        'answer_a': 'condition',
+        'answer_b': 'condition'
+      }
+    },
+    'page_1': {
+      ...
+    },
+    ...,
+    'page_n': {
+      ...
+    }
+  }
+```
 
 
 ## Main.elm
